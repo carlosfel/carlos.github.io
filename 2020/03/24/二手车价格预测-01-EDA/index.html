@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>二手车价格预测_01_EDA | CarlosTse的Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="二手车价格预测_01_EDA | CarlosTse的Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="EDA (Exploratory Data Analysis)是机器学习中拿到数据时第一步要做的，好的数据分析为我们之后进一步处理数据和特征工程打下良好的基础。因为绝大多数人并不拥有能深入理解数据内涵的专业背景，所以必须经过数据分析的完整流程来对数据有初步的探索。 大致思路这里翻译下Medium上这篇博客（Medium访问限制的可以试试这个保存的页面）中提到的EDA思路，可以当作每次分析时自己问自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二手车价格预测_01_EDA">
+<meta property="og:url" content="http://yoursite.com/2020/03/24/%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-01-EDA/index.html">
+<meta property="og:site_name" content="CarlosTse的Blog">
+<meta property="og:description" content="EDA (Exploratory Data Analysis)是机器学习中拿到数据时第一步要做的，好的数据分析为我们之后进一步处理数据和特征工程打下良好的基础。因为绝大多数人并不拥有能深入理解数据内涵的专业背景，所以必须经过数据分析的完整流程来对数据有初步的探索。 大致思路这里翻译下Medium上这篇博客（Medium访问限制的可以试试这个保存的页面）中提到的EDA思路，可以当作每次分析时自己问自">
+<meta property="article:published_time" content="2020-03-24T08:27:03.000Z">
+<meta property="article:modified_time" content="2020-03-24T12:42:01.362Z">
+<meta property="article:author" content="Carlos Tse">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Carlos Tse</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/carlosfel" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:carlos@sjtu.edu.cn" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=2308398616&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(3)</small></div></li>
+    
+        
+            
+            <li><div data-rel="天池比赛打卡">天池比赛打卡<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="工具">工具<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="数据可视化">数据可视化<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="3">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color3">RSS资源相关</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="天池比赛打卡 "
+           href="/2020/03/24/%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-01-EDA/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二手车价格预测_01_EDA">二手车价格预测_01_EDA</span>
+            <span class="post-date" title="2020-03-24 16:27:03">2020/03/24</span>
+        </a>
+        
+        <a  class="工具 "
+           href="/2020/02/03/RSS%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8D%97/"
+           data-tag="RSS资源相关"
+           data-author="" >
+            <span class="post-title" title="RSS食用指南">RSS食用指南</span>
+            <span class="post-date" title="2020-02-03 17:10:07">2020/02/03</span>
+        </a>
+        
+        <a  class="数据可视化 "
+           href="/2020/03/15/%E7%94%A8D3%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E6%94%B9%E5%8F%98%E5%B1%82%E6%AC%A1%E9%A1%BA%E5%BA%8F%E7%9A%84Sankey%E5%9B%BE/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="用D3开发一个可以改变层次顺序的Sankey图">用D3开发一个可以改变层次顺序的Sankey图</span>
+            <span class="post-date" title="2020-03-15 01:34:39">2020/03/15</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-二手车价格预测-01-EDA" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">二手车价格预测_01_EDA</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="天池比赛打卡">天池比赛打卡</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-03-24 20:42:01'>2020-03-24 16:27</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#大致思路"><span class="toc-text">大致思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析工具"><span class="toc-text">分析工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些会经常用到的代码片段"><span class="toc-text">一些会经常用到的代码片段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基操"><span class="toc-text">基操</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#导入数据"><span class="toc-text">导入数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总览数据"><span class="toc-text">总览数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻找缺省值"><span class="toc-text">寻找缺省值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预测值的分布"><span class="toc-text">预测值的分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分离两种特征"><span class="toc-text">分离两种特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字特征"><span class="toc-text">数字特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类别特征"><span class="toc-text">类别特征</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>EDA (Exploratory Data Analysis)是机器学习中拿到数据时第一步要做的，好的数据分析为我们之后进一步处理数据和特征工程打下良好的基础。因为绝大多数人并不拥有能深入理解数据内涵的专业背景，所以必须经过数据分析的完整流程来对数据有初步的探索。</p>
+<h2 id="大致思路"><a href="#大致思路" class="headerlink" title="大致思路"></a>大致思路</h2><p>这里翻译下Medium上<a href="https://towardsdatascience.com/exploratory-data-analysis-for-linear-regression-classification-8a27da23debc" target="_blank" rel="noopener">这篇博客</a>（Medium访问限制的可以试试这个保存的<a href="http://archive.is/ZwSQa#selection-297.0-297.353" target="_blank" rel="noopener">页面</a>）中提到的EDA思路，可以当作每次分析时自己问自己还有哪些工作可以做：</p>
+<blockquote>
+<ul>
+<li>数据集的特点：<br>数据集有多大？（自己的设备能否带的动）有哪些数据类型？有哪些feature？label是什么形式的？</li>
+<li>数据集的统计数据：<br>每个变量的大致范围？均值/中位数/四分位点分别在哪？</li>
+<li>错误、缺省数据和离群点<br>通过统计和可视化的方式找出这些数据点，以备之后进一步处理</li>
+<li>feature和label的分布<br>对于数字型的feature，它是什么分布？对于类别型的feature，如果它的label也是数字形式的话，又是什么分布？</li>
+<li>类别型feature的频率<br>每种label出现的大致频率</li>
+<li>feature间的关系<br>有/无相关性？强/弱相关性？</li>
+</ul>
+</blockquote>
+<h2 id="分析工具"><a href="#分析工具" class="headerlink" title="分析工具"></a>分析工具</h2><p>分析工具上主要是Python的pandas、matplotlib、seaborn包，有时还要用到scikit-learn包中的一些统计工具。<br>也有一些提高效率的GUI式工具，比如我逛github发现的<a href="https://bamboolib.8080labs.com/" target="_blank" rel="noopener">banboolib</a>,可惜收费<br>作为一个初学的菜鸟，我基本都是在jupyterlab里面运行代码，可以打开多个页面一面写代码看结果，一面<del>copy</del>参考公开的kernel</p>
+<h2 id="一些会经常用到的代码片段"><a href="#一些会经常用到的代码片段" class="headerlink" title="一些会经常用到的代码片段"></a>一些会经常用到的代码片段</h2><h3 id="基操"><a href="#基操" class="headerlink" title="基操"></a>基操</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">'ignore'</span>)</span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 让jupyter一个cell里有多个输出指令时可以多行输出</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.interactiveshell <span class="keyword">import</span> InteractiveShell</span><br><span class="line">InteractiveShell.ast_node_interactivity = <span class="string">"all"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">%%javascript</span><br><span class="line"><span class="comment"># 设置输出&gt;9999时才出现滑动窗口</span></span><br><span class="line">//IPython.OutputArea.auto_scroll_threshold = <span class="number">9999</span>;   </span><br><span class="line"><span class="comment"># 设置不出现滑动窗口 true, auto, false </span></span><br><span class="line">IPython.OutputArea.prototype._should_scroll = function()&#123;<span class="keyword">return</span> false&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入常用的库</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br></pre></td></tr></table></figure>
+<h3 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">path = <span class="string">'你的文件地址'</span></span><br><span class="line"><span class="comment"># 本地可以直接cd到目录里再启动jupyter</span></span><br><span class="line">Train_data = pd.read_csv(path+<span class="string">'训练集.csv'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">Test_data = pd.read_csv(path+<span class="string">'测试集.csv'</span>, sep=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="总览数据"><a href="#总览数据" class="headerlink" title="总览数据"></a>总览数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据的头尾</span></span><br><span class="line"><span class="comment"># 数据大小</span></span><br><span class="line">Train_data.head()</span><br><span class="line">//Train_data.head().append(Train_data.tail())</span><br><span class="line">Train_data.shape</span><br><span class="line">Test_data.head()</span><br><span class="line">Test_data.shape</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回包括均值/标准差/最大/最小值/中位数/四分位点等一堆统计量</span></span><br><span class="line">Train_data.describe()</span><br><span class="line">Test_data.describe()</span><br><span class="line"><span class="comment"># 返回各个变量的数据类型</span></span><br><span class="line">Train_data.describe()</span><br><span class="line">Test_data.describe()</span><br></pre></td></tr></table></figure>
+<h3 id="寻找缺省值"><a href="#寻找缺省值" class="headerlink" title="寻找缺省值"></a>寻找缺省值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Train_data.isnull().sum()</span><br><span class="line">Test_data.isnull().sum()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 画图找_1</span></span><br><span class="line"><span class="comment"># 显示有nan的变量并排序</span></span><br><span class="line">missing = Train_data.isnull().sum()</span><br><span class="line">missing = missing[missing &gt; <span class="number">0</span>]</span><br><span class="line">missing.sort_values(inplace=<span class="literal">True</span>)</span><br><span class="line">missing.plot.bar()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 画图找_2</span></span><br><span class="line"><span class="keyword">import</span> missingno <span class="keyword">as</span> msno</span><br><span class="line"><span class="comment"># 画个矩阵</span></span><br><span class="line">msno.matrix(Train_data.sample(<span class="number">250</span>))</span><br><span class="line"><span class="comment"># 画个条形图</span></span><br><span class="line">msno.bar(Train_data.sample(<span class="number">1000</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意object对象空缺值可能没被发现</span></span><br><span class="line">Train_data[<span class="string">'怀疑对象'</span>].value_counts()</span><br><span class="line">Test_data[<span class="string">'怀疑对象'</span>].replace(<span class="string">'-'</span>, np.nan, inplace=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 问题太大的/严重倾斜的可以直接删了</span></span><br><span class="line"><span class="keyword">del</span> Train_data[<span class="string">"删了这个"</span>]</span><br><span class="line"><span class="keyword">del</span> Test_data[<span class="string">"删了这个"</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="预测值的分布"><a href="#预测值的分布" class="headerlink" title="预测值的分布"></a>预测值的分布</h3><p>这个还不懂，后面数据处理特征工程部分再研究</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直接看</span></span><br><span class="line">Train_data[<span class="string">'price'</span>].value_counts()</span><br><span class="line"><span class="comment"># 拟合分布</span></span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> st</span><br><span class="line">y = Train_data[<span class="string">'price'</span>]</span><br><span class="line">plt.figure(<span class="number">1</span>); plt.title(<span class="string">'Johnson SU'</span>)</span><br><span class="line">sns.distplot(y, kde=<span class="literal">False</span>, fit=st.johnsonsu)</span><br><span class="line">plt.figure(<span class="number">2</span>); plt.title(<span class="string">'Normal'</span>)</span><br><span class="line">sns.distplot(y, kde=<span class="literal">False</span>, fit=st.norm)</span><br><span class="line">plt.figure(<span class="number">3</span>); plt.title(<span class="string">'Log Normal'</span>)</span><br><span class="line">sns.distplot(y, kde=<span class="literal">False</span>, fit=st.lognorm)</span><br><span class="line"><span class="comment"># 频数直方图</span></span><br><span class="line">plt.hist(Train_data[<span class="string">'price'</span>], orientation = <span class="string">'vertical'</span>,histtype = <span class="string">'bar'</span>, color =<span class="string">'red'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h3 id="分离两种特征"><a href="#分离两种特征" class="headerlink" title="分离两种特征"></a>分离两种特征</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numeric_features = []</span><br><span class="line">categorical_features = []</span><br></pre></td></tr></table></figure>
+<h3 id="数字特征"><a href="#数字特征" class="headerlink" title="数字特征"></a>数字特征</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 与预测变量相关性分析</span></span><br><span class="line">numeric_features.append(<span class="string">'price'</span>)</span><br><span class="line">price_numeric = Train_data[numeric_features]</span><br><span class="line">correlation = price_numeric.corr()</span><br><span class="line">print(correlation[<span class="string">'price'</span>].sort_values(ascending = <span class="literal">False</span>),<span class="string">'\n'</span>)</span><br><span class="line"><span class="keyword">del</span> price_numeric[<span class="string">'price'</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 与预测变量回归分析</span></span><br><span class="line">fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6), (ax7, ax8), (ax9, ax10)) = plt.subplots(nrows=<span class="number">5</span>, ncols=<span class="number">2</span>, figsize=(<span class="number">24</span>, <span class="number">20</span>))</span><br><span class="line"><span class="comment"># ['v_12', 'v_8' , 'v_0', 'power', 'v_5',  'v_2', 'v_6', 'v_1', 'v_14']</span></span><br><span class="line">v_12_scatter_plot = pd.concat([Y_train,Train_data[<span class="string">'v_12'</span>]],axis = <span class="number">1</span>)</span><br><span class="line">sns.regplot(x=<span class="string">'v_12'</span>,y = <span class="string">'price'</span>, data = v_12_scatter_plot,scatter= <span class="literal">True</span>, fit_reg=<span class="literal">True</span>, ax=ax1)</span><br><span class="line"><span class="comment"># 后面省略</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数字特征偏度峰度</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> numeric_features:</span><br><span class="line">    print(<span class="string">'&#123;:15&#125;'</span>.format(col), </span><br><span class="line">          <span class="string">'Skewness: &#123;:05.2f&#125;'</span>.format(Train_data[col].skew()) , </span><br><span class="line">          <span class="string">'   '</span> ,</span><br><span class="line">          <span class="string">'Kurtosis: &#123;:06.2f&#125;'</span>.format(Train_data[col].kurt())  </span><br><span class="line">         )</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每个特征的分布</span></span><br><span class="line">f = pd.melt(Train_data, value_vars=numeric_features)</span><br><span class="line">g = sns.FacetGrid(f, col=<span class="string">"variable"</span>,  col_wrap=<span class="number">2</span>, sharex=<span class="literal">False</span>, sharey=<span class="literal">False</span>)</span><br><span class="line">g = g.map(sns.distplot, <span class="string">"value"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数字特征相互之间的关系可视化</span></span><br><span class="line">sns.set()</span><br><span class="line">columns = [<span class="string">'price'</span>, <span class="string">'v_12'</span>, <span class="string">'v_8'</span> , <span class="string">'v_0'</span>, <span class="string">'power'</span>, <span class="string">'v_5'</span>,  <span class="string">'v_2'</span>, <span class="string">'v_6'</span>, <span class="string">'v_1'</span>, <span class="string">'v_14'</span>]</span><br><span class="line">sns.pairplot(Train_data[columns],size = <span class="number">2</span> ,kind =<span class="string">'scatter'</span>,diag_kind=<span class="string">'kde'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h3 id="类别特征"><a href="#类别特征" class="headerlink" title="类别特征"></a>类别特征</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 特征nunique分布</span></span><br><span class="line"><span class="keyword">for</span> cat_fea <span class="keyword">in</span> categorical_features:</span><br><span class="line">    print(cat_fea + <span class="string">"的特征分布如下："</span>)</span><br><span class="line">    print(<span class="string">"&#123;&#125;特征有个&#123;&#125;不同的值"</span>.format(cat_fea, Train_data[cat_fea].nunique()))</span><br><span class="line">    print(Train_data[cat_fea].value_counts())</span><br></pre></td></tr></table></figure>
+<p>小提琴图比箱线图多了由宽度表示的频率    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类别特征相对于预测量</span></span><br><span class="line"><span class="comment"># 小提琴图可视化</span></span><br><span class="line">catg_list = categorical_features</span><br><span class="line">target = <span class="string">'price'</span></span><br><span class="line"><span class="keyword">for</span> catg <span class="keyword">in</span> catg_list :</span><br><span class="line">    sns.violinplot(x=catg, y=target, data=Train_data)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类别特征的每个类别频数可视化(count_plot)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_plot</span><span class="params">(x,  **kwargs)</span>:</span></span><br><span class="line">    sns.countplot(x=x)</span><br><span class="line">    x=plt.xticks(rotation=<span class="number">90</span>)</span><br><span class="line"></span><br><span class="line">f = pd.melt(Train_data,  value_vars=categorical_features)</span><br><span class="line">g = sns.FacetGrid(f, col=<span class="string">"variable"</span>,  col_wrap=<span class="number">2</span>, sharex=<span class="literal">False</span>, sharey=<span class="literal">False</span>, size=<span class="number">5</span>)</span><br><span class="line">g = g.map(count_plot, <span class="string">"value"</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 carlos@sjtu.edu.cn </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2020-2020 Carlos</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>恰饭</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#RSS资源相关',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

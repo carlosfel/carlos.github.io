@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>CarlosTse的Blog</title>
+  <title>&#39;二手车价格预测-02-FeatureEngineering&#39; | CarlosTse的Blog</title>
   <meta name="keywords" content="">
-  <meta name="description" content="CarlosTse的Blog">
+  <meta name="description" content="&#39;二手车价格预测-02-FeatureEngineering&#39; | CarlosTse的Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="特征工程1.特征工程的大致任务整理主要根据Tianchi上的示例和这个开源项目 数据处理数值型变量异常值筛选出来删了不用 归一化&#x2F;标准化数据分桶离散化数据，防止过拟合二值分箱 1from sklearn.preprocessing import Binarizer 等距分箱、分位数分箱 1from sklearn.preprocessing import KBinsDiscretizer 示例提到">
 <meta property="og:type" content="article">
@@ -51,7 +51,7 @@
 </div>
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/" class="avatar_target">
     <img class="avatar" src="/img/avatar.jpg" />
@@ -248,12 +248,49 @@
         </div>
     </div>
 </aside>
-<div class="post index">
+<div class="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-二手车价格预测-02-FeatureEngineering" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#谢宇琨的个人博客"><span class="toc-text">谢宇琨的个人博客</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#博客平台"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <h1 class="article-title">&#39;二手车价格预测-02-FeatureEngineering&#39;</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="天池比赛打卡">天池比赛打卡</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-03-27 23:38:26'>2020-03-27 22:08</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#特征工程"><span class="toc-text">特征工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-特征工程的大致任务整理"><span class="toc-text">1.特征工程的大致任务整理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据处理"><span class="toc-text">数据处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数值型变量"><span class="toc-text">数值型变量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#异常值"><span class="toc-text">异常值</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#归一化-标准化"><span class="toc-text">归一化&#x2F;标准化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据分桶"><span class="toc-text">数据分桶</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#缺失值"><span class="toc-text">缺失值</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#类别型变量"><span class="toc-text">类别型变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#特征构造"><span class="toc-text">特征构造</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-特征选择"><span class="toc-text">2.特征选择</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#过滤式（filter）"><span class="toc-text">过滤式（filter）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#包裹式（wrapper）"><span class="toc-text">包裹式（wrapper）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#嵌入式（embedding）"><span class="toc-text">嵌入式（embedding）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-降维"><span class="toc-text">3.降维</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PCA-LDA-ICA"><span class="toc-text">PCA&#x2F; LDA&#x2F; ICA</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#无监督的方法：PCA"><span class="toc-text">无监督的方法：PCA</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#有监督的方法：LDA"><span class="toc-text">有监督的方法：LDA</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#特征选择也是降维"><span class="toc-text">特征选择也是降维</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#这次要重点学啥"><span class="toc-text">这次要重点学啥</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -266,15 +303,57 @@
     }
 </style>
 </div>
-            <h1 id="谢宇琨的个人博客"><a href="#谢宇琨的个人博客" class="headerlink" title="谢宇琨的个人博客"></a>谢宇琨的个人博客</h1><h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>通过 <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 生成，部署在 <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>上，使用在github上开源的主题 <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank" rel="noopener">3-hexo</a> </p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h1><h2 id="1-特征工程的大致任务整理"><a href="#1-特征工程的大致任务整理" class="headerlink" title="1.特征工程的大致任务整理"></a>1.特征工程的大致任务整理</h2><p>主要根据Tianchi上的示例和这个<a href="https://github.com/carlosfel/feature-engineering-handbook" target="_blank" rel="noopener">开源项目</a></p>
+<h3 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h3><h4 id="数值型变量"><a href="#数值型变量" class="headerlink" title="数值型变量"></a>数值型变量</h4><h5 id="异常值"><a href="#异常值" class="headerlink" title="异常值"></a>异常值</h5><p>筛选出来删了不用</p>
+<h5 id="归一化-标准化"><a href="#归一化-标准化" class="headerlink" title="归一化/标准化"></a>归一化/标准化</h5><h5 id="数据分桶"><a href="#数据分桶" class="headerlink" title="数据分桶"></a>数据分桶</h5><p>离散化数据，防止过拟合<br>二值分箱</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> Binarizer</span><br></pre></td></tr></table></figure>
+<p>等距分箱、分位数分箱</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> KBinsDiscretizer</span><br></pre></td></tr></table></figure>
+<p>示例提到的回头再研究</p>
+<blockquote>
+<p>等频分桶；<br>等距分桶；<br>Best-KS 分桶（类似利用基尼指数进行二分类）；<br>卡方分桶；</p>
+</blockquote>
+<h5 id="缺失值"><a href="#缺失值" class="headerlink" title="缺失值"></a>缺失值</h5><p>根据示例的处理思路</p>
+<blockquote>
+<p>不处理（针对类似 XGBoost 等树模型）；<br>删除（缺失数据太多）；<br>插值补全，包括均值/中位数/众数/建模预测/多重插补/压缩感知补全/矩阵补全等；<br>分箱，缺失值一个箱；</p>
+</blockquote>
+<h4 id="类别型变量"><a href="#类别型变量" class="headerlink" title="类别型变量"></a>类别型变量</h4><p>主要关注点就是怎么编码<br>打算看这两篇文章了解一下怎么选择编码方式<br><a href="https://medium.com/wids-mysore/categorical-encoding-techniques-793a012285a5" target="_blank" rel="noopener">categorical-encoding-techniques</a>打不开的话可以用这个<a href="http://archive.today/uyuM6" target="_blank" rel="noopener">短链</a><br><a href="https://towardsdatascience.com/smarter-ways-to-encode-categorical-data-for-machine-learning-part-1-of-3-6dca2f71b159" target="_blank" rel="noopener">smarter-ways-to-encode-categorical-data-for-machine-learning</a>打不开的话可以用这个<a href="http://archive.today/d0Z1E" target="_blank" rel="noopener">短链</a></p>
+<h4 id="特征构造"><a href="#特征构造" class="headerlink" title="特征构造"></a>特征构造</h4><p>根据背景知识去造特征<br>把能看懂的特征转换成机器更易懂的形式（比如邮编转换成地址什么的）<br>简单加减乘除或构造多项式造特征<br>时序变量用featuretool自动造特征</p>
+<h3 id="2-特征选择"><a href="#2-特征选择" class="headerlink" title="2.特征选择"></a>2.特征选择</h3><h4 id="过滤式（filter）"><a href="#过滤式（filter）" class="headerlink" title="过滤式（filter）"></a>过滤式（filter）</h4><h4 id="包裹式（wrapper）"><a href="#包裹式（wrapper）" class="headerlink" title="包裹式（wrapper）"></a>包裹式（wrapper）</h4><p>LVW(Las Vegas Wrapper)是一种随机算法，看伪代码感觉思路很像模拟退火，计算开销比过滤式要大</p>
+<h4 id="嵌入式（embedding）"><a href="#嵌入式（embedding）" class="headerlink" title="嵌入式（embedding）"></a>嵌入式（embedding）</h4><h3 id="3-降维"><a href="#3-降维" class="headerlink" title="3.降维"></a>3.降维</h3><p>特征太多，手里的设备carry不了，必须减少一些，用数量更少更“有用”的特征来训练</p>
+<h4 id="PCA-LDA-ICA"><a href="#PCA-LDA-ICA" class="headerlink" title="PCA/ LDA/ ICA"></a>PCA/ LDA/ ICA</h4><h5 id="无监督的方法：PCA"><a href="#无监督的方法：PCA" class="headerlink" title="无监督的方法：PCA"></a>无监督的方法：PCA</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br></pre></td></tr></table></figure>
+<p>要用的时候可以看的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html" target="_blank" rel="noopener">PCA方法文档</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> KernelPCA</span><br></pre></td></tr></table></figure>
+<p>还有这个用于非线性降维的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.KernelPCA.html" target="_blank" rel="noopener">kernel PCA方法文档</a></p>
+<h5 id="有监督的方法：LDA"><a href="#有监督的方法：LDA" class="headerlink" title="有监督的方法：LDA"></a>有监督的方法：LDA</h5><p>只用于分类问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.discriminant_analysis <span class="keyword">import</span> LinearDiscriminantAnalysis <span class="keyword">as</span> LDA</span><br></pre></td></tr></table></figure>
+<h4 id="特征选择也是降维"><a href="#特征选择也是降维" class="headerlink" title="特征选择也是降维"></a>特征选择也是降维</h4><h2 id="这次要重点学啥"><a href="#这次要重点学啥" class="headerlink" title="这次要重点学啥"></a>这次要重点学啥</h2><p>因为俺是新手，所以这次主要用些功能强大的模型像XGBoost和LightGBM,特征选择打算先交给模型去做，做完根据训练完特征的importance排序后再删除一些特征</p>
+<p>特征工程东西太多了，以后慢慢学不着急</p>
+<p>接下来几天重点就是着手去把数值型异常值处理了，做一下归一化/标准化或分桶；给类别型变量找个好的编码方法；然后就是好好看XGBoost和LightGBM的教程</p>
 
-        </article>
-        
-        <p>
-            <a  class="dashang" onclick="dashangToggle()">赏</a>
-        </p>
-        
-        
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 carlos@sjtu.edu.cn </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">©2020-2020 Carlos</p>

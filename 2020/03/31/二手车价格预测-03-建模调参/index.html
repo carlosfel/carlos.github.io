@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>CarlosTse的Blog</title>
+  <title>&#39;二手车价格预测-03-建模调参&#39; | CarlosTse的Blog</title>
   <meta name="keywords" content="">
-  <meta name="description" content="CarlosTse的Blog">
+  <meta name="description" content="&#39;二手车价格预测-03-建模调参&#39; | CarlosTse的Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="XGBoost和LightGBM学习两种模型的基础：GBDTGBDT（Gradient Boosting Decision Tree） 梯度提升决策树优点：灵活，解释性好缺点：容易过拟合 XGBoost和LightGBM区别结构区别：在连续变量的划分上 确定划分点的时候最原始、最‘笨’的方法是每个点都试一次，和其他点比，复杂度O(n^2)  处理连续变量时，划分点的算法不同   XGboost使用">
 <meta property="og:type" content="article">
@@ -53,7 +53,7 @@
 </div>
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/" class="avatar_target">
     <img class="avatar" src="/img/avatar.jpg" />
@@ -258,12 +258,49 @@
         </div>
     </div>
 </aside>
-<div class="post index">
+<div class="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-二手车价格预测-03-建模调参" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#谢宇琨的个人博客"><span class="toc-text">谢宇琨的个人博客</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#博客平台"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <h1 class="article-title">&#39;二手车价格预测-03-建模调参&#39;</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="天池比赛打卡">天池比赛打卡</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-04-01 00:58:59'>2020-03-31 22:46</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#XGBoost和LightGBM学习"><span class="toc-text">XGBoost和LightGBM学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两种模型的基础：GBDT"><span class="toc-text">两种模型的基础：GBDT</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#梯度提升"><span class="toc-text">梯度提升</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#决策树"><span class="toc-text">决策树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XGBoost和LightGBM区别"><span class="toc-text">XGBoost和LightGBM区别</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -276,15 +313,68 @@
     }
 </style>
 </div>
-            <h1 id="谢宇琨的个人博客"><a href="#谢宇琨的个人博客" class="headerlink" title="谢宇琨的个人博客"></a>谢宇琨的个人博客</h1><h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>通过 <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 生成，部署在 <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>上，使用在github上开源的主题 <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank" rel="noopener">3-hexo</a> </p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="XGBoost和LightGBM学习"><a href="#XGBoost和LightGBM学习" class="headerlink" title="XGBoost和LightGBM学习"></a>XGBoost和LightGBM学习</h2><h3 id="两种模型的基础：GBDT"><a href="#两种模型的基础：GBDT" class="headerlink" title="两种模型的基础：GBDT"></a>两种模型的基础：GBDT</h3><p>GBDT（Gradient Boosting Decision Tree）</p>
+<h4 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h4><h4 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h4><p>优点：灵活，解释性好<br>缺点：容易过拟合</p>
+<h3 id="XGBoost和LightGBM区别"><a href="#XGBoost和LightGBM区别" class="headerlink" title="XGBoost和LightGBM区别"></a>XGBoost和LightGBM区别</h3><p>结构区别：在连续变量的划分上</p>
+<p>确定划分点的时候最原始、最‘笨’的方法是每个点都试一次，和其他点比，复杂度O(n^2)</p>
+<ol>
+<li>处理连续变量时，划分点的算法不同</li>
+</ol>
+<ul>
+<li><p>XGboost使用的是pre-sorted base algorithms</p>
+<p>排序后再计算，减少了比较的过程</p>
+<p>进一步可以用直方图，拿每个区间的中位线来比较（牺牲了准确度）</p>
+</li>
+<li><p>LightGBM使用的是histogram based algorithms</p>
+<p>先做了数据分桶，把连续型数据离散化</p>
+</li>
+<li><p>LightGBM还使用了一种技术GOSS(Gradient-based One-side Sampling)</p>
+<p>对于gradients较小，即不那么重要的数据（这里重要度由梯度决定），只抽样部分出来</p>
+</li>
+</ul>
+<ol start="2">
+<li>树的生长方式不同</li>
+</ol>
+<ul>
+<li><p>XGboost是level-wise tree growth</p>
+<p>一层一层向下生长</p>
+</li>
+<li><p>LightGBM是leaf-wise tree growth</p>
+<p>不同叶子节点层数不相同</p>
+</li>
+</ul>
+<ol start="3">
+<li>处理离散变量</li>
+</ol>
+<ul>
+<li>XGBoost不能直接处理类别型变量，要先做label encoding</li>
+<li>LightGBM有自己的不同于传统的处理方法，更智能</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/01/Gld9wd.png" alt="Gld9wd.png"></p>
 
-        </article>
-        
-        <p>
-            <a  class="dashang" onclick="dashangToggle()">赏</a>
-        </p>
-        
-        
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 carlos@sjtu.edu.cn </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">©2020-2020 Carlos</p>
